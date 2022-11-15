@@ -33,17 +33,7 @@ class Graph extends Component<IProps, {}> {
   componentDidMount() {
     // Get element to attach the table from the DOM.
     const elem = document.getElementsByTagName('perspective-viewer')[0] as unknown as PerspectiveViewerElement;
-    // view is the type of graph we want to visualize data with. In this case a y_line since its continuous
-    elem.setAttribute('view', 'y_line'); 
-    //column pivots allow us to distinguish between stocks
-    elem.setAttribute('column-pivots', '["stock"]');
-    //row pivots takes care of x axis. It allow us to be able to match each data point to its timestamp
-    elem.setAttribute('row-pivots', '["timestamp]'); 
-    // columns allows us to focus on a particular aspect of the stock. In this case the top ask price
-    elem.setAttribute('columns', '["top_ask_price"]');
-    //takes care of duplicates by checking allowing us to check for unique stock prices and timestamps and taking the avg of the duplicates
-    elem.setAttribute('aggregates','{"stock": "distinct count","top_ask_price":"avg", "top_bid_price":"avg", "timestamp":"distinct count"}');
-
+    
     const schema = {
       stock: 'string',
       top_ask_price: 'float',
@@ -59,6 +49,19 @@ class Graph extends Component<IProps, {}> {
 
       // Add more Perspective configurations here.
       elem.load(this.table);
+      // view is the type of graph we want to visualize data with. In this case a y_line since its continuous
+      elem.setAttribute('view', 'y_line'); 
+      //column pivots allow us to distinguish between stocks
+      elem.setAttribute('column-pivots', '["stock"]');
+      //row pivots takes care of x axis. It allow us to be able to match each data point to its timestamp
+      elem.setAttribute('row-pivots', '["timestamp]'); 
+      // columns allows us to focus on a particular aspect of the stock. In this case the top ask price
+      elem.setAttribute('columns', '["top_ask_price"]');
+      //takes care of duplicates by checking allowing us to check for unique stock prices and timestamps and taking the avg of the duplicates
+      elem.setAttribute('aggregates',
+          '{"stock": "distinct count","top_ask_price":"avg", "top_bid_price":"avg", "timestamp":"distinct count"}'
+      );
+
     }
   }
 
